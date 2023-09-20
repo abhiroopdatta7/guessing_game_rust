@@ -13,5 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@main
 
+    - name: Docker login
+      run: echo ${{ secrets.DOCKERHUB_KEY }} | docker login -u abhiroopdatta7 --password-stdin
+
     - name: Build
       run: make build publish
