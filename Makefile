@@ -1,4 +1,3 @@
-DOCKER_IMAGE := abhiroopdatta/guessing_game
 
 .PHONY: play
 play: build
