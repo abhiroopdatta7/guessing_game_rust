@@ -1,4 +1,6 @@
 
+DOCKER_IMAGE := abhiroopdatta7/guessing_game_rust
+
 .PHONY: play
 play: build
 	docker run --rm -it ${DOCKER_IMAGE}
