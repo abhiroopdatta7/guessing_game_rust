@@ -2,10 +2,7 @@ use colored::*;
 use rand::Rng;
 use std::{cmp::Ordering, io};
 
-pub enum GameStatus {
-    Incomplete,
-    Won,
-}
+const EMOJI_PARTYINGFACE: char = '\u{1F973}';
 
 pub struct Game {
     secret: u32,
@@ -17,10 +14,7 @@ pub struct Game {
 impl Game {
     #[cfg(debug_assertions)]
     fn print_secret(&self) {
-        println!(
-            "The game is in Debug mode, and the secret is: {}",
-            self.secret
-        );
+        println!("[[DEBUG]] The secret is: {}", self.secret);
     }
 
     #[cfg(not(debug_assertions))]
@@ -38,20 +32,21 @@ impl Game {
         self.high = high;
     }
 
-    pub fn init(low: u32, high: u32) -> Game {
-        println!("Generating secret to guess, low: {}, high {}", low, high);
-        let secret = rand::thread_rng().gen_range(low, high);
+    pub fn init(low_i: u32, high_i: u32) -> Game {
+        let secret = rand::thread_rng().gen_range(low_i, high_i);
+        let low = low_i - 1;
+        let high = high_i - 1;
+        println!("Generating secret to guess, between {} and {}", low, high);
 
         Game {
             secret,
-            low: low - 1,
-            high: high - 1,
+            low,
+            high,
             attempt: 0,
         }
     }
 
     pub fn play(&mut self) {
-        let emoji_partyingface = '\u{1F973}';
         self.print_secret();
 
         loop {
@@ -86,7 +81,7 @@ impl Game {
                 Ordering::Equal => {
                     println!(
                         "{} {} {}",
-                        emoji_partyingface,
+                        EMOJI_PARTYINGFACE,
                         "You win, Correct ans is: ".green(),
                         guess
                     );
